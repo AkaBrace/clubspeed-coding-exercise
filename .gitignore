@@ -94,3 +94,8 @@ jspm_packages
 
 # Yarn Integrity file
 .yarn-integrity
+
+# Ignore environment files that may contain secrets
+*.env*
+# But don't ignore the example env var files
+!*.env.example

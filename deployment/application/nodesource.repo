@@ -1,0 +1,5 @@
+[nodesource]
+name=NodeSource Node.js 4.x Packages for EL $releasever - $basearch
+baseurl=https://rpm.nodesource.com/pub_4.x/el/$releasever/$basearch/
+gpgcheck=0
+enabled=1
