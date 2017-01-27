@@ -1,11 +1,14 @@
 {
-    "name"           : "Coding_Exercise",
-    "version"        : "0.0.1",
-    "private"        : true,
-    "homepage"       : "http://www.clubspeed.com",
-    "author"         : "Club Speed",
-    "main"           : "server.js",
-    "dependencies"   : {
-        "express"             : "4.x.x"
+    "name"            : "Coding_Exercise",
+    "version"         : "0.0.1",
+    "private"         : true,
+    "homepage"        : "http://www.clubspeed.com",
+    "author"          : "Club Speed",
+    "main"            : "server.js",
+    "devDependencies" : {
+        "nodemon" : "1.10.x"
+    },
+    "dependencies"    : {
+        "express" : "4.x.x"
     }
 }

@@ -30,6 +30,12 @@ services:
       service: "application"
     env_file:
       - "local.dev.env"
+    command: ["./node_modules/.bin/nodemon", "--exec", "node", "--debug", "server.js"]
+    expose:
+      # Allows incoming connections on non-public networks used by the node.js debugger
+      - "5858"
+    ports:
+      - "5858:5858"
     volumes:
       - ".:${PATH_TO_CODE_SOURCES}:rw"
       - "${PATH_TO_CODE_SOURCES}/node_modules"
