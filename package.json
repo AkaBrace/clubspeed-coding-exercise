@@ -9,9 +9,11 @@
         "nodemon" : "1.10.x"
     },
     "dependencies"    : {
-        "body-parser" : "1.16.x",
-        "dotenv"      : "4.0.x",
-        "express"     : "4.x.x",
-        "mongoose"    : "^4.x.x"
+        "body-parser"              : "1.16.x",
+        "dotenv"                   : "4.0.x",
+        "express"                  : "4.x.x",
+        "express-restify-mongoose" : "^4.x.x",
+        "method-override"          : "*",
+        "mongoose"                 : "^4.x.x"
     }
 }
