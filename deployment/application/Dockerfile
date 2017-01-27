@@ -38,6 +38,16 @@ RUN \
     # Make web directory accessible by under priv user so that npm can install packages
     chown -R nodejsapp:nodejsapp $PWD
 
+# Pre-seed the remaining npm packages as a separate
+# layer in order to utilize docker layer caching
+# and faster re-compilation of container images
+USER nodejsapp
+COPY package.json ./
+RUN npm \
+        install && \
+    npm \
+        cache clean
+
 COPY . .
 
 USER root
