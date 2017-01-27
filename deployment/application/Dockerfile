@@ -56,6 +56,7 @@ RUN \
     chown -R nodejsapp:nodejsapp $PWD
 
 ENTRYPOINT ["bash", "deployment/application/entrypoint.sh"]
+CMD ["node", "server.js"]
 
 EXPOSE \
     # Allowing incoming connections on node.js port that will listen on

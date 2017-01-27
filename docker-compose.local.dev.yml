@@ -32,3 +32,4 @@ services:
       - "local.dev.env"
     volumes:
       - ".:${PATH_TO_CODE_SOURCES}:rw"
+      - "${PATH_TO_CODE_SOURCES}/node_modules"
