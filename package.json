@@ -9,6 +9,7 @@
         "nodemon" : "1.10.x"
     },
     "dependencies"    : {
+        "dotenv"  : "4.0.x",
         "express" : "4.x.x"
     }
 }

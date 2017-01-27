@@ -1,5 +1,13 @@
-var g_oExpress     = require('express');
-var g_oApplication = g_oExpress();
+var g_oApplication;
+var g_oExpress;
+
+g_oExpress = require('express');
+
+// Init middleware at application level
+require('dotenv').config();
+
+// Init the framework
+g_oApplication = g_oExpress();
 
 g_oApplication.get('/', function (g_oRequest, g_oResponse)
     {
