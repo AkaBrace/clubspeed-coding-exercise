@@ -1,7 +1,12 @@
 var g_oApplication;
 var g_oExpress;
+var g_oBodyParser;
+var g_oMongoose;
+var g_oRouter;
 
-g_oExpress = require('express');
+g_oBodyParser      = require('body-parser');
+g_oExpress         = require('express');
+g_oMongoose        = require('mongoose');
 
 // Init middleware at application level
 require('dotenv').config();
@@ -9,11 +14,15 @@ require('dotenv').config();
 // Init the framework
 g_oApplication = g_oExpress();
 
-g_oApplication.get('/', function (g_oRequest, g_oResponse)
-    {
-        g_oResponse.send('Hello World!')
-    }
-);
+// Init a Router instance
+g_oRouter = g_oExpress.Router();
+
+g_oApplication.use(g_oBodyParser.json());
+
+// Make DB connection to Mongo using env var
+g_oMongoose.connect(process.env.APP_CONFIG_MONGO_HOST);
+
+g_oApplication.use(g_oRouter);
 
 g_oApplication.listen(3000, function ()
     {
