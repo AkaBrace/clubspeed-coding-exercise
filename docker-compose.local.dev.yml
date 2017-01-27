@@ -1,0 +1,34 @@
+version: "2"
+
+services:
+
+  # =====================================
+  #   Base Centos Image
+  #   Other services are based off of this image
+  # =====================================
+  base-centos:
+    extends:
+      file: "docker-compose.base.yml"
+      service: "base-centos"
+
+  # =====================================
+  #   Application Tier
+  #   Node.js is used for the application
+  # =====================================
+  application:
+    image: "brucelarsen/application:latest"
+    build:
+      args:
+        workingDirectory: "${PATH_TO_CODE_SOURCES}"
+#    # Build args allow devs to experiment with different versions
+#        gosuVersion:
+#        gosuSha256:
+#        nodejsVersion:
+    mem_limit: "128m"
+    extends:
+      file: "docker-compose.base.yml"
+      service: "application"
+    env_file:
+      - "local.dev.env"
+    volumes:
+      - ".:${PATH_TO_CODE_SOURCES}:rw"

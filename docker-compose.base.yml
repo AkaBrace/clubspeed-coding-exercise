@@ -1,0 +1,37 @@
+version: "2"
+
+services:
+
+  # =====================================
+  #   Base Centos Image
+  #   Other services are based off of this image
+  # =====================================
+  base-centos:
+    image: "brucelarsen/centos:latest"
+    build:
+      context: "deployment/centos"
+    labels:
+      - "name=CentOS Base"
+      - "vendor=Speed Club"
+
+  # =====================================
+  #   Application Tier
+  #   Node.js is used for the application
+  # =====================================
+  application:
+    image: "brucelarsen/application"
+    build:
+      context: "."
+      dockerfile: "deployment/application/Dockerfile"
+      # TODO: Move these build args into the .env file
+      args:
+        workingDirectory: "/usr/share/local/application"
+        gosuVersion: "1.10"
+        gosuSha256: "B42F6819007F00F88E364FD4036A9C25BF357DD4"
+        nodejsVersion: "4.6.2"
+    mem_limit: "128m"
+    restart: "always"
+    labels:
+      - "name=Node.js Application"
+    env_file:
+      - ".env"
