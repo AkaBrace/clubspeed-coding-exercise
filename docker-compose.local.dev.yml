@@ -39,3 +39,13 @@ services:
     volumes:
       - ".:${PATH_TO_CODE_SOURCES}:rw"
       - "${PATH_TO_CODE_SOURCES}/node_modules"
+
+  # =====================================
+  #   Database Tier
+  #   Mongo is used for data storage
+  # =====================================
+  mongo:
+    image: "brucelarsen/mongo:latest"
+    extends:
+      file: "docker-compose.base.yml"
+      service: "mongo"

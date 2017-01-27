@@ -37,3 +37,20 @@ services:
       - ".env"
     ports:
       - "3000:3000"
+
+  # =====================================
+  #   Database Tier
+  #   Mongo is used for data storage
+  # =====================================
+  mongo:
+    image: "brucelarsen/mongo:latest"
+    build:
+      context: "deployment/mongo"
+    mem_limit: "1024m"
+    restart: "always"
+    labels:
+      - "name=Mongo Database"
+    env_file:
+      - ".env"
+    ports:
+      - "27017:27017"
