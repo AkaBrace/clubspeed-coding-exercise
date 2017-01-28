@@ -6,7 +6,10 @@
     "author"          : "Club Speed",
     "main"            : "server.js",
     "devDependencies" : {
-        "nodemon" : "1.10.x"
+        "frisby"       : "0.8.x",
+        "jasmine-node" : "^1.14.5",
+        "nodemon"      : "1.10.x",
+        "request"      : "2.74.x"
     },
     "dependencies"    : {
         "body-parser"              : "1.16.x",
@@ -15,5 +18,8 @@
         "express-restify-mongoose" : "^4.x.x",
         "method-override"          : "*",
         "mongoose"                 : "^4.x.x"
+    },
+    "scripts"         : {
+        "test" : "node_modules/.bin/jasmine-node --verbose ."
     }
 }
