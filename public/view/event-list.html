@@ -1,0 +1,22 @@
+<div>
+    <div>
+        <h1>{{ listEvents.m_strToday | date : 'fullDate'}}  </h1>
+        <ul>
+            <li ng-repeat="l_oAnEvent in listEvents.m_aryEvents | orderBy: 'time'">
+
+                <div>
+                    <div>
+                        <div>
+                            {{l_oAnEvent.time | date:'H:mm' }}
+                        </div>
+                        <div>
+                            {{ l_oAnEvent.name | uppercase}}
+                        </div>
+                    </div>
+
+                </div>
+
+            </li>
+        </ul>
+    </div>
+</div>

@@ -4,6 +4,7 @@ var g_oBodyParser;
 var g_oMethodOverride;
 var g_oMongoose;
 var g_oMongooseRestify;
+var g_oPath;
 var g_oRouter;
 
 g_oBodyParser      = require('body-parser');
@@ -11,6 +12,7 @@ g_oExpress         = require('express');
 g_oMongooseRestify = require('express-restify-mongoose');
 g_oMethodOverride  = require('method-override');
 g_oMongoose        = require('mongoose');
+g_oPath            = require("path");
 
 // Init middleware at application level
 require('dotenv').config();
@@ -23,6 +25,7 @@ g_oRouter = g_oExpress.Router();
 
 g_oApplication.use(g_oBodyParser.json());
 g_oApplication.use(g_oMethodOverride());
+g_oApplication.use('/', g_oExpress.static(g_oPath.join(__dirname, 'public')));
 
 // Make DB connection to Mongo using env var
 g_oMongoose.connect(process.env.APP_CONFIG_MONGO_HOST);
