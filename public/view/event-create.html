@@ -1,0 +1,19 @@
+<div>
+    <div>
+        <h1>Create A New Event</h1>
+        <h2>{{createEvent.value}}</h2>
+    </div>
+    <div>
+        <form ng-submit="createEvent.submit()">
+            <div>
+                <label for="m_strEventName">Event Name</label>
+                <input type="text" id="m_strEventName" ng-model="createEvent.m_strEventName">
+            </div>
+            <div>
+                <label for="m_strDatetimeOfEvent">Event Date</label>
+                <input type="datetime-local" id="m_strDatetimeOfEvent" ng-model="createEvent.m_strDatetimeOfEvent">
+            </div>
+            <button type="submit">Add</button>
+        </form>
+    </div>
+</div>

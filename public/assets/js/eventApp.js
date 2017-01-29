@@ -44,6 +44,58 @@ angular.module('eventApp', ["ngRoute"])
         }]
     )
 
+    .controller('createEventController', ['$http', '$location',
+        function ($http, $location)
+        {
+            var l_oEventToCreate;
+            var l_strApiUrlPath;
+            var l_oCurrDate;
+
+            l_strApiUrlPath  = '/api/v1/event';
+            l_oEventToCreate = this;
+            l_oCurrDate      = new Date();
+
+            this.m_strEventName       = "";
+            this.m_strDatetimeOfEvent = new Date(
+                l_oCurrDate.getFullYear(),
+                l_oCurrDate.getMonth(),
+                l_oCurrDate.getDate(),
+                l_oCurrDate.getHours()
+            );
+
+            /**
+             * Makes call to remote API to create a new event
+             */
+            this.submit = function ()
+            {
+                var l_oRequestBody;
+                var l_cfgRequest;
+
+                l_oRequestBody = JSON.stringify({
+                        name: l_oEventToCreate.m_strEventName,
+                        time: Date.parse(l_oEventToCreate.m_strDatetimeOfEvent)
+                    }
+                );
+
+                l_cfgRequest = {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                $http.post(l_strApiUrlPath, l_oRequestBody, l_cfgRequest)
+                    .success(
+                        function (p_oResponseData, p_oResponseStatus, p_oResponseHeaders, p_cfgResponse)
+                        {
+                            if (p_oResponseStatus) {
+                                $location.path('/')
+                            }
+                        }
+                    )
+            };
+        }]
+    )
+
     .config(
         function ($routeProvider)
         {
@@ -52,6 +104,12 @@ angular.module('eventApp', ["ngRoute"])
                         templateUrl:  "../view/event-list.html",
                         controller:   'listEventsController',
                         controllerAs: "listEvents"
+                    }
+                )
+                .when("/create", {
+                        templateUrl:  "../view/event-create.html",
+                        controller:   "createEventController",
+                        controllerAs: 'createEvent'
                     }
                 )
         }
