@@ -12,6 +12,48 @@ angular.module('eventApp', ["ngRoute"])
             l_oDayOfEvents.m_oTheCurrentDay = new Date();
 
             /**
+             * Flips the event list to the next day of events
+             */
+            this.gotoListForNextDay = function ()
+            {
+                var l_oTheNextDay;
+
+                l_oTheNextDay = new Date();
+                l_oTheNextDay.setDate(l_oDayOfEvents.m_oTheCurrentDay.getDate() + 1);
+                l_oDayOfEvents.m_oTheCurrentDay = l_oTheNextDay;
+
+                $http.get(l_strApiUrlPath + lf_generateJsonQueryString())
+                    .success(
+                        function (p_oResponseData)
+                        {
+                            l_oDayOfEvents.m_aryEvents = p_oResponseData;
+                        }
+                    );
+
+            };
+
+            /**
+             * Flips the event list to the previous day of events
+             */
+            this.gotoListForPreviousDay = function ()
+            {
+                var l_oThePreviousDay;
+
+                l_oThePreviousDay = new Date();
+                l_oThePreviousDay.setDate(l_oDayOfEvents.m_oTheCurrentDay.getDate() - 1);
+                l_oDayOfEvents.m_oTheCurrentDay = l_oThePreviousDay;
+
+                $http.get('/api/v1/event?query=' + lf_generateJsonQueryString())
+                    .success(
+                        function (p_oResponseData)
+                        {
+                            l_oDayOfEvents.m_aryEvents = p_oResponseData;
+                        }
+                    );
+
+            };
+
+            /**
              * Generates a query string used to obtain a list of events from the restify-mongoose API
              *
              * @private
