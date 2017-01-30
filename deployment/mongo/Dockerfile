@@ -1,7 +1,7 @@
 FROM brucelarsen/centos
 
 LABEL \
-    name="Node.js Application"
+    name="MongoDB"
 
 COPY mongosource.repo /etc/yum.repos.d/
 RUN \
