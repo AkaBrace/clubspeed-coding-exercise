@@ -135,6 +135,14 @@ angular.module('eventApp', ["ngRoute"])
                         }
                     )
             };
+
+            /**
+             * Redirects user to the home page.
+             */
+            this.goBack = function ()
+            {
+                $location.path('/');
+            };
         }]
     )
 
@@ -196,6 +204,14 @@ angular.module('eventApp', ["ngRoute"])
 
                         }
                     )
+            };
+
+            /**
+             * Redirects user to the home page.
+             */
+            this.goBack = function ()
+            {
+                $location.path('/');
             };
 
             $http.get(l_strApiUrlPath + $routeParams.id)

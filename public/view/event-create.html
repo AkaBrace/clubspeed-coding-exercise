@@ -1,19 +1,20 @@
-<div>
-    <div>
+<div class="container">
+    <div class="row">
         <h1>Create A New Event</h1>
         <h2>{{createEvent.value}}</h2>
     </div>
-    <div>
+    <div class="row">
         <form ng-submit="createEvent.submit()">
-            <div>
+            <div class="form-group">
                 <label for="m_strEventName">Event Name</label>
-                <input type="text" id="m_strEventName" ng-model="createEvent.m_strEventName">
+                <input type="text" class="form-control" id="m_strEventName" ng-model="createEvent.m_strEventName" placeholder="Name or Title of Event">
             </div>
-            <div>
+            <div class="form-group">
                 <label for="m_strDatetimeOfEvent">Event Date</label>
-                <input type="datetime-local" id="m_strDatetimeOfEvent" ng-model="createEvent.m_strDatetimeOfEvent">
+                <input type="datetime-local" class="form-control" id="m_strDatetimeOfEvent" ng-model="createEvent.m_strDatetimeOfEvent" required>
             </div>
-            <button type="submit">Add</button>
+            <button type="submit" class="btn btn-default">Add</button>
+            <button class="btn btn-default" ng-click="createEvent.goBack()">Go Back</button>
         </form>
     </div>
 </div>

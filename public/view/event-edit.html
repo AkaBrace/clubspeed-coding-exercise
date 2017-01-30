@@ -1,19 +1,20 @@
 <div class="container">
-    <div>
+    <div class="row">
         <h1>Edit your event</h1>
     </div>
-    <div>
+    <div class="row">
         <form ng-submit="editEvent.edit()">
-            <div>
+            <div class="form-group">
                 <label for="m_strEventName">Event Name</label>
-                <input type="text" id="m_strEventName" ng-model="editEvent.m_strEventName">
+                <input type="text" class="form-control" id="m_strEventName" ng-model="editEvent.m_strEventName" placeholder="Event">
             </div>
-            <div>
+            <div class="form-group" id="datetimepicker2">
                 <label for="m_strDatetimeOfEvent">Event Date</label>
-                <input id="m_strDatetimeOfEvent" ng-model="editEvent.m_strDatetimeOfEvent">
+                <input type="datetime-local" class="form-control" id="m_strDatetimeOfEvent" ng-model="editEvent.m_strDatetimeOfEvent" required>
             </div>
-            <button type="submit">Update</button>
+            <button class="btn btn-default" ng-click="editEvent.goBack()">Go Back</button>
+            <button type="submit" class="btn btn-default">Update</button>
         </form>
-        <button ng-click="editEvent.delete()">Delete</button>
+        <button class="btn btn-default" ng-click="editEvent.delete()">Delete</button>
     </div>
 </div>
