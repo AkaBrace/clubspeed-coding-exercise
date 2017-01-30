@@ -181,6 +181,23 @@ angular.module('eventApp', ["ngRoute"])
                     )
             };
 
+            /**
+             * Deletes an event
+             */
+            this.delete = function ()
+            {
+                $http.delete(l_strApiUrlPath + l_oEventToEdit.m_oEventBeforeMutation['_id'])
+                    .success(
+                        function (p_oResponseData, p_oResponseStatus, p_oResonseHeaders, p_cfgResponse)
+                        {
+                            if (p_oResponseStatus) {
+                                $location.path('/')
+                            }
+
+                        }
+                    )
+            };
+
             $http.get(l_strApiUrlPath + $routeParams.id)
                 .success(
                     function (p_oResponseData)
