@@ -1,4 +1,23 @@
-angular.module('eventApp', ["ngRoute"])
+angular.module('commonActions', [])
+    .factory('goBack', ['$location',
+            function ($location)
+            {
+                var lf_goBack;
+
+                /**
+                 * Redirects user to the home page.
+                 */
+                lf_goBack = function ()
+                {
+                    $location.path('/');
+                };
+
+                return lf_goBack;
+            }
+        ]
+    );
+
+angular.module('eventApp', ["ngRoute", 'commonActions'])
     .controller('listEventsController', ['$http', function ($http)
         {
             var l_oDayOfEvents;
@@ -86,8 +105,8 @@ angular.module('eventApp', ["ngRoute"])
         }]
     )
 
-    .controller('createEventController', ['$http', '$location',
-        function ($http, $location)
+    .controller('createEventController', ['$http', 'goBack',
+        function ($http, pf_goBack)
         {
             var l_oEventToCreate;
             var l_strApiUrlPath;
@@ -98,6 +117,7 @@ angular.module('eventApp', ["ngRoute"])
             l_oCurrDate      = new Date();
 
             this.m_strEventName       = "";
+            this.mf_goBack            = pf_goBack;
             this.m_strDatetimeOfEvent = new Date(
                 l_oCurrDate.getFullYear(),
                 l_oCurrDate.getMonth(),
@@ -130,24 +150,16 @@ angular.module('eventApp', ["ngRoute"])
                         function (p_oResponseData, p_oResponseStatus, p_oResponseHeaders, p_cfgResponse)
                         {
                             if (p_oResponseStatus) {
-                                $location.path('/')
+                                l_oEventToCreate.mf_goBack();
                             }
                         }
                     )
             };
-
-            /**
-             * Redirects user to the home page.
-             */
-            this.goBack = function ()
-            {
-                $location.path('/');
-            };
         }]
     )
 
-    .controller('editEventController', ['$http', '$routeParams', '$location',
-        function ($http, $routeParams, $location)
+    .controller('editEventController', ['$http', '$routeParams', 'goBack',
+        function ($http, $routeParams, pf_goBack)
         {
             var l_oEventToEdit = this;
 
@@ -156,6 +168,7 @@ angular.module('eventApp', ["ngRoute"])
             this.m_strEventName         = "";
             this.m_strDatetimeOfEvent   = "";
             this.m_oEventBeforeMutation = {};
+            this.mf_goBack              = pf_goBack;
 
             /**
              * Modifies an existing event
@@ -182,7 +195,7 @@ angular.module('eventApp', ["ngRoute"])
                         function (p_oResponseData, p_oResponseStatus, p_oResonseHeaders, p_cfgResponse)
                         {
                             if (p_oResponseStatus) {
-                                $location.path('/')
+                                l_oEventToEdit.mf_goBack();
                             }
 
                         }
@@ -199,19 +212,11 @@ angular.module('eventApp', ["ngRoute"])
                         function (p_oResponseData, p_oResponseStatus, p_oResonseHeaders, p_cfgResponse)
                         {
                             if (p_oResponseStatus) {
-                                $location.path('/')
+                                l_oEventToEdit.mf_goBack();
                             }
 
                         }
                     )
-            };
-
-            /**
-             * Redirects user to the home page.
-             */
-            this.goBack = function ()
-            {
-                $location.path('/');
             };
 
             $http.get(l_strApiUrlPath + $routeParams.id)
