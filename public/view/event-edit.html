@@ -1,0 +1,18 @@
+<div class="container">
+    <div>
+        <h1>Edit your event</h1>
+    </div>
+    <div>
+        <form ng-submit="editEvent.edit()">
+            <div>
+                <label for="m_strEventName">Event Name</label>
+                <input type="text" id="m_strEventName" ng-model="editEvent.m_strEventName">
+            </div>
+            <div>
+                <label for="m_strDatetimeOfEvent">Event Date</label>
+                <input id="m_strDatetimeOfEvent" ng-model="editEvent.m_strDatetimeOfEvent">
+            </div>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</div>

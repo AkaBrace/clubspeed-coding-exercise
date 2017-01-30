@@ -138,6 +138,61 @@ angular.module('eventApp', ["ngRoute"])
         }]
     )
 
+    .controller('editEventController', ['$http', '$routeParams', '$location',
+        function ($http, $routeParams, $location)
+        {
+            var l_oEventToEdit = this;
+
+            var l_strApiUrlPath = '/api/v1/event/';
+
+            this.m_strEventName         = "";
+            this.m_strDatetimeOfEvent   = "";
+            this.m_oEventBeforeMutation = {};
+
+            /**
+             * Modifies an existing event
+             */
+            this.edit = function ()
+            {
+                var l_oRequestData;
+                var l_cfgRequest;
+
+                l_oRequestData = JSON.stringify({
+                        name: l_oEventToEdit.m_strEventName,
+                        time: Date.parse(l_oEventToEdit.m_strDatetimeOfEvent)
+                    }
+                );
+
+                l_cfgRequest = {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                $http.put(l_strApiUrlPath + l_oEventToEdit.m_oEventBeforeMutation['_id'], l_oRequestData, l_cfgRequest)
+                    .success(
+                        function (p_oResponseData, p_oResponseStatus, p_oResonseHeaders, p_cfgResponse)
+                        {
+                            if (p_oResponseStatus) {
+                                $location.path('/')
+                            }
+
+                        }
+                    )
+            };
+
+            $http.get(l_strApiUrlPath + $routeParams.id)
+                .success(
+                    function (p_oResponseData)
+                    {
+                        l_oEventToEdit.m_oEventBeforeMutation = p_oResponseData;
+                        l_oEventToEdit.m_strEventName         = p_oResponseData.name;
+                        l_oEventToEdit.m_strDatetimeOfEvent   = new Date(p_oResponseData.time);
+                    }
+                );
+        }]
+    )
+
     .config(
         function ($routeProvider)
         {
@@ -153,6 +208,11 @@ angular.module('eventApp', ["ngRoute"])
                         controller:   "createEventController",
                         controllerAs: 'createEvent'
                     }
-                )
+                ).when("/edit/:id", {
+                    templateUrl:  '../view/event-edit.html',
+                    controller:   'editEventController',
+                    controllerAs: 'editEvent'
+                }
+            )
         }
     );
