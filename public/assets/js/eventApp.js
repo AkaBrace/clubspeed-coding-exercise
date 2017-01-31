@@ -18,91 +18,103 @@ angular.module('commonActions', [])
     );
 
 angular.module('eventApp', ["ngRoute", 'commonActions'])
-    .controller('listEventsController', ['$http', function ($http)
-        {
-            var l_oDayOfEvents;
-            var lf_generateJsonQueryString;
-            var l_strApiUrlPath;
-
-            l_strApiUrlPath = '/api/v1/event?query=';
-
-            l_oDayOfEvents                  = this;
-            l_oDayOfEvents.m_aryEvents      = [];
-            l_oDayOfEvents.m_oTheCurrentDay = new Date();
-
-            /**
-             * Flips the event list to the next day of events
-             */
-            this.gotoListForNextDay = function ()
+    .controller('listEventsController', ['$http',
+            function ($http)
             {
-                var l_oTheNextDay;
+                this.m_oTheCurrentDay = new Date();
+                this.m_strToday       = this.m_oTheCurrentDay.toLocaleDateString();
+                this.m_aryEvents      = [];
 
-                l_oTheNextDay = new Date();
-                l_oTheNextDay.setDate(l_oDayOfEvents.m_oTheCurrentDay.getDate() + 1);
-                l_oDayOfEvents.m_oTheCurrentDay = l_oTheNextDay;
+                /**
+                 * Flips the event list to the previous day of events
+                 */
+                this.gotoListForPreviousDay = function ()
+                {
+                    var l_iTheCurrentDay;
 
-                $http.get(l_strApiUrlPath + lf_generateJsonQueryString())
-                    .success(
-                        function (p_oResponseData)
+                    l_iTheCurrentDay = this.m_oTheCurrentDay.getDate();
+
+                    this.m_oTheCurrentDay.setDate(l_iTheCurrentDay - 1);
+                    this.mf_updateListOfEvents();
+                };
+
+                /**
+                 * Flips the event list to the next day of events
+                 */
+                this.gotoListForNextDay = function ()
+                {
+                    var l_iTheCurrentDay;
+
+                    l_iTheCurrentDay = this.m_oTheCurrentDay.getDate();
+
+                    this.m_oTheCurrentDay.setDate(l_iTheCurrentDay + 1);
+                    this.mf_updateListOfEvents();
+                };
+
+                /**
+                 * A getter for the beginning of the day relative to 'm_oTheCurrentDay'
+                 *
+                 * @returns {int} - linux timestamp for beginning of the day
+                 */
+                this.m_getBeginOfDay = function ()
+                {
+                    var l_oDate;
+
+                    l_oDate = new Date(this.m_oTheCurrentDay.valueOf());
+
+                    return l_oDate.setHours(0, 0, 0, 0);
+                };
+
+                /**
+                 * A getter for the end of the day relative to 'm_oTheCurrentDay'
+                 *
+                 * @returns {int} - linux timestamp for end of the day
+                 */
+                this.m_getEndOfDay = function ()
+                {
+                    var l_oDate;
+
+                    l_oDate = new Date(this.m_oTheCurrentDay.valueOf());
+
+                    return l_oDate.setHours(23, 59, 59, 999);
+                };
+
+                /**
+                 * Updates the ary of event from a remote API call
+                 *
+                 * TODO: This method should be moved to it's own service
+                 */
+                this.mf_updateListOfEvents = function ()
+                {
+                    var l_oSelf;
+                    var l_strJsonQuery;
+                    var l_strApiUrlPath;
+
+                    l_strJsonQuery = JSON.stringify(
                         {
-                            l_oDayOfEvents.m_aryEvents = p_oResponseData;
+                            $and: [{
+                                time: '>=' + this.m_getBeginOfDay()
+                            }, {
+                                time: '<=' + this.m_getEndOfDay()
+                            }]
                         }
                     );
 
-            };
+                    l_strApiUrlPath = '/api/v1/event?query=';
+                    l_oSelf         = this;
+                    $http.get(l_strApiUrlPath + l_strJsonQuery)
+                        .success(
+                            function (p_oResponseData)
+                            {
+                                l_oSelf.m_aryEvents = p_oResponseData;
+                                l_oSelf.m_strToday  = l_oSelf.m_oTheCurrentDay.toLocaleDateString();
+                            }
+                        );
+                };
 
-            /**
-             * Flips the event list to the previous day of events
-             */
-            this.gotoListForPreviousDay = function ()
-            {
-                var l_oThePreviousDay;
-
-                l_oThePreviousDay = new Date();
-                l_oThePreviousDay.setDate(l_oDayOfEvents.m_oTheCurrentDay.getDate() - 1);
-                l_oDayOfEvents.m_oTheCurrentDay = l_oThePreviousDay;
-
-                $http.get('/api/v1/event?query=' + lf_generateJsonQueryString())
-                    .success(
-                        function (p_oResponseData)
-                        {
-                            l_oDayOfEvents.m_aryEvents = p_oResponseData;
-                        }
-                    );
-
-            };
-
-            /**
-             * Generates a query string used to obtain a list of events from the restify-mongoose API
-             *
-             * @private
-             *
-             * @returns {string} - A JSON formatted query string for restify-mongoose
-             */
-            lf_generateJsonQueryString = function ()
-            {
-                l_oDayOfEvents.m_intBeginOfDay = l_oDayOfEvents.m_oTheCurrentDay.setHours(0, 0, 0, 0);
-                l_oDayOfEvents.m_intEndOfDay   = l_oDayOfEvents.m_oTheCurrentDay.setHours(23, 59, 59, 999);
-                l_oDayOfEvents.m_strToday      = l_oDayOfEvents.m_oTheCurrentDay.toLocaleDateString();
-
-                return JSON.stringify({
-                        $and: [{
-                            time: '>=' + l_oDayOfEvents.m_intBeginOfDay
-                        }, {
-                            time: '<=' + l_oDayOfEvents.m_intEndOfDay
-                        }]
-                    }
-                );
-            };
-
-            $http.get(l_strApiUrlPath + lf_generateJsonQueryString())
-                .success(
-                    function (p_oResponseData)
-                    {
-                        l_oDayOfEvents.m_aryEvents = p_oResponseData;
-                    }
-                );
-        }]
+                this.mf_updateListOfEvents();
+            }
+        ]
     )
 
     .controller('createEventController', ['$http', 'goBack',

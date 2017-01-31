@@ -18,7 +18,6 @@
                             </a>
                         </div>
                     </div>
-
                 </div>
 
             </li>
@@ -27,12 +26,12 @@
     <div class="row">
         <div class="btn-group btn-group-justified" role="group" aria-label="...">
             <div class="btn-group" role="group">
-                <button class="btn btn-default btn-lg" ng-click="listEvents.gotoListForPreviousDay()">
+                <button class="btn btn-default btn-lg" ng-click="listEvents.gotoListForPreviousDay(listEvents.m_strToday)">
                     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Previous Day
                 </button>
             </div>
             <div class="btn-group" role="group">
-                <button class="btn btn-default btn-lg" ng-click="listEvents.gotoListForNextDay()">
+                <button class="btn btn-default btn-lg" ng-click="listEvents.gotoListForNextDay(listEvents.m_strToday)">
                     Next Day <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                 </button>
             </div>
